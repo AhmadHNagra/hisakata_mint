@@ -6,11 +6,34 @@ import * as s from './styles/globalStyles'
 import styled from 'styled-components'
 import { create } from 'ipfs-http-client'
 import Web3 from 'web3'
+import Navbar from './components/Navbar'
 const { NFTUris } = require('./NFTUris.js')
 
 export const StyledButton = styled.button`
-  padding: 8px;
+  border-radius: 4px;
+  background: firebrick;
+  padding: 10px 22px;
+  color: #fff;
+  outline: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+  text-decoration: none;
+  &:hover {
+    transition: all 0.2s ease-in-out;
+    background: #fff;
+    color: #010606;
+  }
 `
+const Input = styled.input`
+  padding: 0.5em;
+  margin: 0.5em;
+  color: black;
+  background: papayawhip;
+  border: none;
+  border-radius: 3px;
+`
+
 const ipfsClient = create('https://ipfs.infura.io:5001/api/v0')
 
 function App() {
@@ -65,12 +88,16 @@ function App() {
     }
     const addedMetadata = await ipfsClient.add(JSON.stringify(metaDataObj))
     const tokenUri = ipfsBaseUrl + addedMetadata.path
-    console.log(tokenUri)
   }
 
   const Initiatemint = () => {
-    for (var i = 0; i < parseInt(mintCount); i++) {
-      mint()
+    if (!isNaN(parseInt(mintCount))) {
+      for (var i = 0; i < parseInt(mintCount); i++) {
+        mint()
+      }
+    } else {
+      setLoading(false)
+      setStatus('Please pass a number to the input')
     }
   }
 
@@ -134,6 +161,7 @@ function App() {
 
   return (
     <s.Screen>
+      <Navbar />
       {blockchain.account === '' || blockchain.smartContract === null ? (
         <s.Container flex={1} ai={'center'} jc={'center'}>
           <s.TextTitle>Connect to the Blockchain</s.TextTitle>
@@ -152,10 +180,12 @@ function App() {
           ) : null}
         </s.Container>
       ) : (
-        <s.Container flex={1} ai={'center'} style={{ padding: 24 }}>
-          <s.TextTitle style={{ textAlign: 'center' }}>
-            Welcome to Altar
-          </s.TextTitle>
+        <s.Container
+          flex={1}
+          ai={'center'}
+          jc={'center'}
+          style={{ padding: 24 }}
+        >
           {loading ? (
             <>
               <s.SpacerSmall />
@@ -173,6 +203,13 @@ function App() {
             </>
           ) : null}
           <s.SpacerLarge />
+          <Input
+            type="number"
+            value={mintCount}
+            onChange={(e) => {
+              setMintCount(e.target.value)
+            }}
+          ></Input>
           <StyledButton
             onClick={(e) => {
               e.preventDefault()
@@ -181,72 +218,7 @@ function App() {
           >
             MINT
           </StyledButton>
-          <select
-            value={mintCount}
-            onChange={(e) => {
-              setMintCount(e.target.value)
-            }}
-          >
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-          </select>
           <s.SpacerLarge />
-          <StyledButton
-            onClick={(e) => {
-              e.preventDefault()
-              setMetadataCreation(!metadatCreation)
-            }}
-          >
-            Enable/Disable Metadata Creation
-          </StyledButton>
-          <s.SpacerLarge />
-          {metadatCreation !== false ? (
-            <>
-              <form
-                onSubmit={(event) => {
-                  event.preventDefault()
-                  createMetadata()
-                }}
-              >
-                <label>
-                  Name:
-                  <input
-                    type="text"
-                    value={name}
-                    onChange={(event) => {
-                      setName(event.target.value)
-                    }}
-                    name="name"
-                  />
-                </label>
-                <label>
-                  Description:
-                  <input
-                    type="text"
-                    value={description}
-                    onChange={(event) => {
-                      setDescription(event.target.value)
-                    }}
-                    name="description"
-                  />
-                </label>
-                <img src={image} />
-                <h1>Select Image</h1>
-                <input
-                  type="file"
-                  name="myImage"
-                  onChange={(event) => {
-                    if (event.target.files && event.target.files[0]) {
-                      let img = event.target.files[0]
-                      setImage(URL.createObjectURL(img))
-                    }
-                  }}
-                />
-                <input type="submit" value="Create Metadata" />
-              </form>
-            </>
-          ) : null}
         </s.Container>
       )}
     </s.Screen>

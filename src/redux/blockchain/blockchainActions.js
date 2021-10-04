@@ -41,7 +41,6 @@ export const connect = () => {
         const networkId = await window.ethereum.request({
           method: 'net_version',
         })
-        console.log(accounts, networkId, SmartContract.networks)
         if (networkId == 4) {
           //rinkeby network id
           const SmartContractObj = new web3.eth.Contract(
