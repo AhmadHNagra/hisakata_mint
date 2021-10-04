@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/hisakata_mint/static/css/main.5d481f60.chunk.css",
-    "main.js": "/hisakata_mint/static/js/main.a0b55576.chunk.js",
-    "main.js.map": "/hisakata_mint/static/js/main.a0b55576.chunk.js.map",
+    "main.js": "/hisakata_mint/static/js/main.9cc8ec76.chunk.js",
+    "main.js.map": "/hisakata_mint/static/js/main.9cc8ec76.chunk.js.map",
     "runtime-main.js": "/hisakata_mint/static/js/runtime-main.5e86f90f.js",
     "runtime-main.js.map": "/hisakata_mint/static/js/runtime-main.5e86f90f.js.map",
     "static/js/2.4fadd080.chunk.js": "/hisakata_mint/static/js/2.4fadd080.chunk.js",
@@ -17,6 +17,6 @@
     "static/js/runtime-main.5e86f90f.js",
     "static/js/2.4fadd080.chunk.js",
     "static/css/main.5d481f60.chunk.css",
-    "static/js/main.a0b55576.chunk.js"
+    "static/js/main.9cc8ec76.chunk.js"
   ]
 }
