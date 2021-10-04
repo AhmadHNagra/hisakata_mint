@@ -1,22 +1,22 @@
 {
   "files": {
     "main.css": "/hisakata_mint/static/css/main.5d481f60.chunk.css",
-    "main.js": "/hisakata_mint/static/js/main.9cc8ec76.chunk.js",
-    "main.js.map": "/hisakata_mint/static/js/main.9cc8ec76.chunk.js.map",
+    "main.js": "/hisakata_mint/static/js/main.a52d7dd9.chunk.js",
+    "main.js.map": "/hisakata_mint/static/js/main.a52d7dd9.chunk.js.map",
     "runtime-main.js": "/hisakata_mint/static/js/runtime-main.5e86f90f.js",
     "runtime-main.js.map": "/hisakata_mint/static/js/runtime-main.5e86f90f.js.map",
-    "static/js/2.4fadd080.chunk.js": "/hisakata_mint/static/js/2.4fadd080.chunk.js",
-    "static/js/2.4fadd080.chunk.js.map": "/hisakata_mint/static/js/2.4fadd080.chunk.js.map",
+    "static/js/2.62d13900.chunk.js": "/hisakata_mint/static/js/2.62d13900.chunk.js",
+    "static/js/2.62d13900.chunk.js.map": "/hisakata_mint/static/js/2.62d13900.chunk.js.map",
     "static/js/3.c9d29137.chunk.js": "/hisakata_mint/static/js/3.c9d29137.chunk.js",
     "static/js/3.c9d29137.chunk.js.map": "/hisakata_mint/static/js/3.c9d29137.chunk.js.map",
     "index.html": "/hisakata_mint/index.html",
     "static/css/main.5d481f60.chunk.css.map": "/hisakata_mint/static/css/main.5d481f60.chunk.css.map",
-    "static/js/2.4fadd080.chunk.js.LICENSE.txt": "/hisakata_mint/static/js/2.4fadd080.chunk.js.LICENSE.txt"
+    "static/js/2.62d13900.chunk.js.LICENSE.txt": "/hisakata_mint/static/js/2.62d13900.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.5e86f90f.js",
-    "static/js/2.4fadd080.chunk.js",
+    "static/js/2.62d13900.chunk.js",
     "static/css/main.5d481f60.chunk.css",
-    "static/js/main.9cc8ec76.chunk.js"
+    "static/js/main.a52d7dd9.chunk.js"
   ]
 }
