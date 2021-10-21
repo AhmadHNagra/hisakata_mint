@@ -45,7 +45,7 @@ export const connect = () => {
           //rinkeby network id
           const SmartContractObj = new web3.eth.Contract(
             SmartContract.abi,
-            '0x9698B21eBc5A7355f2bE0ef2F2781dE0E54f93f0', //contract address
+            '0xD2E15F0D2B6D9082b4fEbCE16932d2ac28A4fAdA', //contract address
           )
           dispatch(
             connectSuccess({
@@ -64,7 +64,7 @@ export const connect = () => {
           dispatch(connectFailed('Change network to Rinkeby.'))
         }
       } catch (err) {
-        dispatch(connectFailed('Something went wrong.'))
+        dispatch(connectFailed('Something went wrong. Please try again.'))
       }
     } else {
       dispatch(connectFailed('Install Metamask.'))

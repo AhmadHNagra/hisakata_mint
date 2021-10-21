@@ -4,7 +4,6 @@ import { connect } from './redux/blockchain/blockchainActions'
 import { fetchData } from './redux/data/dataActions'
 import * as s from './styles/globalStyles'
 import styled from 'styled-components'
-import { create } from 'ipfs-http-client'
 import Web3 from 'web3'
 import Navbar from './components/Navbar'
 const { NFTUris } = require('./NFTUris.js')
@@ -34,20 +33,14 @@ const Input = styled.input`
   border-radius: 3px;
 `
 
-const ipfsClient = create('https://ipfs.infura.io:5001/api/v0')
-
 function App() {
-  const [name, setName] = useState('')
-  const [description, setDescription] = useState('')
-  const [image, setImage] = useState('')
   const [loading, setLoading] = useState(false)
   const [status, setStatus] = useState('')
-  const [metadatCreation, setMetadataCreation] = useState(false)
   const [mintCount, setMintCount] = useState('1')
 
   const dispatch = useDispatch()
   const blockchain = useSelector((state) => state.blockchain)
-  const ipfsBaseUrl = 'https://ipfs.infura.io/ipfs/'
+  const totalItems = 10000
 
   useEffect(() => {
     if (blockchain.account !== '' && blockchain.smartContract !== null) {
@@ -55,50 +48,17 @@ function App() {
     }
   }, [blockchain.smartContract, dispatch])
 
-  const createMetadata = () => {
-    try {
-      setLoading(true)
-      setStatus('Creating Metadata')
-      toDataURL(image, useBuffer)
-    } catch (err) {
-      setLoading(false)
-      setStatus('Error')
-    }
-  }
-  const useBuffer = async (imageUri) => {
-    const addedImage = await ipfsClient.add(imageUri)
-    const metaDataObj = {
-      name: name,
-      description: description,
-      image: ipfsBaseUrl + addedImage.path,
-      attributes: [
-        {
-          trait_type: 'Agility',
-          value: Math.floor(1 + Math.random() * (250 - 1)),
-        },
-        {
-          trait_type: 'Strength',
-          value: Math.floor(1 + Math.random() * (250 - 1)),
-        },
-        {
-          trait_type: 'Intelligence',
-          value: Math.floor(1 + Math.random() * (250 - 1)),
-        },
-      ],
-    }
-    const addedMetadata = await ipfsClient.add(JSON.stringify(metaDataObj))
-    const tokenUri = ipfsBaseUrl + addedMetadata.path
-  }
-
   const Initiatemint = () => {
     if (!isNaN(parseInt(mintCount))) {
-      for (var i = 0; i < parseInt(mintCount); i++) {
-        mint()
-      }
+      mint()
     } else {
       setLoading(false)
       setStatus('Please pass a number to the input')
     }
+  }
+  const spliceUri = (parseUri) => {
+    var arr = parseUri.split('/')
+    return arr[5]
   }
 
   const mint = () => {
@@ -106,57 +66,73 @@ function App() {
       setLoading(true)
       setStatus('Begun minting process')
       blockchain.smartContract.methods
-        .GetAllExistingTokens()
+        .GetPrice()
         .call()
-        .then((receipt) => {
-          let existingUri = receipt.map((a) => a.uri)
-          if (existingUri.length >= 30) {
-            setLoading(false)
-            setStatus('All possible Tokens minted')
-            return
-          }
-          var uri = NFTUris[Math.floor(Math.random() * 30)]
-          while (existingUri.includes(uri)) {
-            uri = NFTUris[Math.floor(Math.random() * 30)]
-          }
+        .then((tokenPrice) => {
           blockchain.smartContract.methods
-            .CreateCollectible(blockchain.account, uri)
-            .send({
-              from: blockchain.account,
-              value: Web3.utils.toWei('0.07', 'ether'),
-            })
-            .once('error', (err) => {
-              setLoading(false)
-              setStatus('Transaction rejected')
-            })
+            .GetAllExistingTokens()
+            .call()
             .then((receipt) => {
-              setLoading(false)
-              setStatus('Success')
+              let existingUri = receipt.map((a) => a.uri)
+              if (existingUri.length >= totalItems) {
+                setLoading(false)
+                setStatus('All possible Tokens minted')
+                return
+              }
+              const selectedUris = []
+              var parsedExistingUriArr = existingUri.map((s) => spliceUri(s))
+              for (var i = 0; i < parseInt(mintCount); i++) {
+                var uri = NFTUris[Math.floor(Math.random() * totalItems)]
+                while (parsedExistingUriArr.includes(uri)) {
+                  uri = NFTUris[Math.floor(Math.random() * totalItems)]
+                }
+                selectedUris.push(uri)
+              }
+
+              blockchain.smartContract.methods
+                .CreateMultipleCollectibles(blockchain.account, selectedUris)
+                .estimateGas({
+                  from: blockchain.account,
+                  value: tokenPrice,
+                })
+                .then(function (gasAmount) {
+                  blockchain.smartContract.methods
+                    .CreateMultipleCollectibles(
+                      blockchain.account,
+                      selectedUris,
+                    )
+                    .send({
+                      from: blockchain.account,
+                      value: tokenPrice * parseInt(mintCount),
+                      gas: gasAmount,
+                    })
+                    .once('error', () => {
+                      setLoading(false)
+                      setStatus('Transaction rejected')
+                    })
+                    .then(() => {
+                      setLoading(false)
+                      setStatus('Success')
+                    })
+                    .catch((err) => {
+                      setLoading(false)
+                      setStatus('Something went wrong. Please try again')
+                      console.log(err)
+                    })
+                })
+                .catch((err) => {
+                  setLoading(false)
+                  setStatus(
+                    'Something went wrong. Please try again (Verify that you have enough funds in wallet to initate this transaction).',
+                  )
+                  console.log(err)
+                })
             })
-            .catch((err) => console.log(err))
         })
     } catch (error) {
       setLoading(false)
       setStatus(error)
     }
-  }
-
-  async function toDataURL(url, callback) {
-    var xhr = new XMLHttpRequest()
-    xhr.open('get', url)
-    xhr.responseType = 'blob'
-    xhr.onload = function () {
-      var fr = new FileReader()
-
-      fr.onload = function () {
-        const buffer = Buffer(this.result.split(',')[1], 'base64')
-        callback(buffer)
-      }
-
-      fr.readAsDataURL(xhr.response) // async call
-    }
-
-    xhr.send()
   }
 
   return (
@@ -207,9 +183,14 @@ function App() {
             type="number"
             value={mintCount}
             onChange={(e) => {
-              setMintCount(e.target.value)
+              if (e.target.value > 0) {
+                setMintCount(e.target.value)
+              } else {
+                e.target.value = 1
+              }
             }}
           ></Input>
+          <s.SpacerSmall />
           <StyledButton
             onClick={(e) => {
               e.preventDefault()

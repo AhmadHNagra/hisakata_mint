@@ -665,7 +665,7 @@
   "sourceMap": "60:367:11:-:0;;;85:33;;;-1:-1:-1;;;;;;85:33:11;108:10;85:33;;;60:367;;;;;;;;;;;;;;;;",
   "deployedSourceMap": "60:367:11:-:0;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;123:36;;;:::i;:::-;;;;;;;:::i;:::-;;;;;;;;85:33;;;:::i;:::-;;;;;;;:::i;319:105::-;;;;;;:::i;:::-;;:::i;:::-;;123:36;;;;:::o;85:33::-;;;-1:-1:-1;;;;;85:33:11;;:::o;319:105::-;225:5;;-1:-1:-1;;;;;225:5:11;211:10;:19;195:104;;;;-1:-1:-1;;;195:104:11;;;;;;;:::i;:::-;;;;;;;;;382:24:::1;:36:::0;319:105::o;14:190:13:-;;126:2;114:9;105:7;101:23;97:32;94:2;;;147:6;139;132:22;94:2;-1:-1:-1;175:23:13;;84:120;-1:-1:-1;84:120:13:o;209:203::-;-1:-1:-1;;;;;373:32:13;;;;355:51;;343:2;328:18;;310:102::o;417:415::-;619:2;601:21;;;658:2;638:18;;;631:30;697:34;692:2;677:18;;670:62;-1:-1:-1;;;763:2:13;748:18;;741:49;822:3;807:19;;591:241::o;837:177::-;983:25;;;971:2;956:18;;938:76::o",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ncontract Migrations {\r\n  address public owner = msg.sender;\r\n  uint public last_completed_migration;\r\n\r\n  modifier restricted() {\r\n    require(\r\n      msg.sender == owner,\r\n      \"This function is restricted to the contract's owner\"\r\n    );\r\n    _;\r\n  }\r\n\r\n  function setCompleted(uint completed) public restricted {\r\n    last_completed_migration = completed;\r\n  }\r\n}\r\n",
-  "sourcePath": "C:\\Users\\Predator\\Desktop\\interviewApp\\test_dapp\\contracts\\Migrations.sol",
+  "sourcePath": "C:\\Users\\Predator\\Desktop\\interviewApp\\production_dapp\\contracts\\Migrations.sol",
   "ast": {
     "absolutePath": "project:/contracts/Migrations.sol",
     "exportedSymbols": {
@@ -1470,10 +1470,22 @@
       "links": {},
       "address": "0x4a35753471567F7275948A3c089D4693248e2087",
       "transactionHash": "0x23039b4659e67cccb682dd73fae0f1037f6edcddc571d6bc38162c5dd5b58c9e"
+    },
+    "1633363534860": {
+      "events": {},
+      "links": {},
+      "address": "0x847deD5471F583e6113F2ef09458460857a5584a",
+      "transactionHash": "0x997310bcfc0dee293e75209e39e0a9d9246029178c32938309c9b5f3d001bbb6"
+    },
+    "1634828962650": {
+      "events": {},
+      "links": {},
+      "address": "0xfb841948b01A6c3F5913D6Fe129aecf82623e26f",
+      "transactionHash": "0x1f510dd13a7034ed159e9fec8b5a92eca2be78b9579bc471396373f78decc62f"
     }
   },
   "schemaVersion": "3.4.3",
-  "updatedAt": "2021-09-17T11:09:57.525Z",
+  "updatedAt": "2021-10-21T15:10:17.226Z",
   "networkType": "ethereum",
   "devdoc": {
     "kind": "dev",

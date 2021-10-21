@@ -1,13 +1,6 @@
 import React from 'react'
 import { BrowserRouter } from 'react-router-dom'
-import {
-  Nav,
-  NavLink,
-  Bars,
-  NavMenu,
-  NavBtn,
-  NavBtnLink,
-} from './NavbarElements'
+import { Nav, NavLink, Bars, NavMenu, NavBtnLink } from './NavbarElements'
 
 const Navbar = () => {
   return (
