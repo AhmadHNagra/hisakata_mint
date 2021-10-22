@@ -1,9 +1,10 @@
 import styled from 'styled-components'
+import img from '../background.png'
 
 // Used for wrapping a page component
 export const Screen = styled.div`
   background-color: var(--black);
-  background-image: ${({ image }) => (image ? `url(${image})` : 'none')};
+  background-image: url(${img});
   background-size: cover;
   background-position: center;
   width: 100%;
